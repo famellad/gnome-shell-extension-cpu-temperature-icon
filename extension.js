@@ -18,10 +18,14 @@ CpuTemperature.prototype = {
     _init: function(){
         PanelMenu.SystemStatusButton.prototype._init.call(this, 'temperature');
         
-        this.statusLabel = new St.Label({ text: '-' });
+        this.statusLabel = new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" });
         // destroy all previously created children, and add our statusLabel
         this.actor.get_children().forEach(function(c) { c.destroy() });
         this.actor.add_actor(this.statusLabel);
+        
+    //let labl = new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" });
+    //let labl = new St.Label({ style_class: "tempmon tempmon-warn", text: "\u26a0" });
+    //let labl = new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
         
         this._update_temp();
         //update every 15 seconds
@@ -83,13 +87,20 @@ CpuTemperature.prototype = {
                 }
             }
             else {
-                title="Warning";
+                title= new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2718" });
                 content="Please install lm-sensors";
                 command=["echo"];
             }
         }
         
-        this.statusLabel.set_text(title);
+
+        this.statusLabel = title;
+        // destroy all previously created children, and add our statusLabel
+        this.actor.get_children().forEach(function(c) { c.destroy() });
+        this.actor.add_actor(this.statusLabel);
+        
+        //this.statusLabel.set_style("tempmon tempmon-crit");
+        //this.statusLabel.set_text(title);
         this.menu.box.get_children().forEach(function(c) { c.destroy() });
 
         let section = new PopupMenu.PopupMenuSection("Temperature");
@@ -184,13 +195,17 @@ CpuTemperature.prototype = {
     },
 
     _getContent: function(c){
-        return c.toString()+"\u1d3cC / "+this._toFahrenheit(c).toString()+"\u1d3cF";
+        return "CPU Temperature:\u0020\u0020"+c.toString()+"\u1d3cC";
     },
 
     _getTitle: function(c) {
-        return c.toString()+"\u1d3cC";
-        //comment the last line and uncomment the next line to display temperature in Fahrenheit
-        //return this._toFahrenheit(c).toString()+"\u1d3cF";
+        if (c < 60) {
+            return new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" }); 
+        } 
+        else if (c < 75) {
+            return new St.Label({ style_class: "tempmon tempmon-warn", text: "\u279a" });
+        }
+        return new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
     }
 }
 
@@ -227,4 +242,3 @@ function enable() {
 function disable() {
     Main.panel._statusArea['temperature'].actor.hide();
 }
-
