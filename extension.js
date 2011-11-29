@@ -23,10 +23,6 @@ CpuTemperature.prototype = {
         this.actor.get_children().forEach(function(c) { c.destroy() });
         this.actor.add_actor(this.statusLabel);
         
-    //let labl = new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" });
-    //let labl = new St.Label({ style_class: "tempmon tempmon-warn", text: "\u26a0" });
-    //let labl = new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
-        
         this._update_temp();
         //update every 15 seconds
         GLib.timeout_add(0, 15000, Lang.bind(this, function () {
@@ -60,7 +56,7 @@ CpuTemperature.prototype = {
                 let temperature = GLib.file_get_contents(cpuTemperatureInfo[i]);
                 if(temperature[0]) {
                     let c = parseInt(temperature[1])/1000;
-                    title=this._getTitle(c);
+                    icon=this._getIcon(c);
                     content=this._getContent(c);
                     command=["echo"];
                     foundTemperature = true;
@@ -81,26 +77,24 @@ CpuTemperature.prototype = {
                 let sensors = GLib.spawn_command_line_sync(foundSensor);
                 if(sensors[0]){
                     let temp=this._findTemperatureFromSensorsOutput(sensors[1]);
-                    title=this._getTitle(temp);
+                    icon=this._getIcon(temp);
                     content=this._getContent(temp);
                     command=["echo"];
                 }
             }
             else {
-                title= new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2718" });
+                icon= new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2718" });
                 content="Please install lm-sensors";
                 command=["echo"];
             }
         }
         
 
-        this.statusLabel = title;
+        this.statusLabel = icon;
         // destroy all previously created children, and add our statusLabel
         this.actor.get_children().forEach(function(c) { c.destroy() });
         this.actor.add_actor(this.statusLabel);
         
-        //this.statusLabel.set_style("tempmon tempmon-crit");
-        //this.statusLabel.set_text(title);
         this.menu.box.get_children().forEach(function(c) { c.destroy() });
 
         let section = new PopupMenu.PopupMenuSection("Temperature");
@@ -196,9 +190,10 @@ CpuTemperature.prototype = {
 
     _getContent: function(c){
         return "CPU Temperature:\u0020\u0020"+c.toString()+"\u1d3cC";
+        //return "CPU Temperature:\u0020\u0020"+_toFarenheit(c).toString()+"\u1d3cC";
     },
 
-    _getTitle: function(c) {
+    _getIcon: function(c) {
         if (c < 60) {
             return new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" }); 
         } 
@@ -242,67 +237,3 @@ function enable() {
 function disable() {
     Main.panel._statusArea['temperature'].actor.hide();
 }
-
-/*
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-const PopupMenu = imports.ui.popupMenu;
-
-let text, button;
-
-function _hideHello() {
-    Main.uiGroup.remove_actor(text);
-    text = null;
-}
-
-function _showHello() {
-    if (!text) {
-        text = new St.Label({ style_class: 'helloworld-label', text: "sompol text" });
-        Main.uiGroup.add_actor(text);
-    }
-
-    text.opacity = 255;
-
-    let monitor = Main.layoutManager.primaryMonitor;
-
-    text.set_position(Math.floor(monitor.width / 2 - text.width / 2),
-                      Math.floor(monitor.height / 2 - text.height / 2));
-
-    Tweener.addTween(text,
-                     { time: 3 });
-
-    Tweener.addTween(text,
-                     { opacity: 0,
-                       time: 4,
-                       transition: 'easeOutQuad',
-                       onComplete: _hideHello });
-}
-
-function init() {
-    button = new St.Bin({ style_class: 'panel-button',
-                          reactive: true,
-                          can_focus: true,
-                          x_fill: true,
-                          y_fill: false,
-                          track_hover: true });
-    let icon = new St.Icon({ icon_name: 'system-run',
-                             icon_type: St.IconType.SYMBOLIC,
-                             style_class: 'system-status-icon' });
-                             
-    let labl = new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" });
-    //let labl = new St.Label({ style_class: "tempmon tempmon-warn", text: "\u26a0" });
-    //let labl = new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
-
-    button.set_child(icon);
-    button.set_child(labl);
-    button.connect('button-press-event', _showHello);
-}
-
-function enable() {
-    Main.panel._rightBox.insert_actor(button, 0);
-}
-
-function disable() {
-    Main.panel._rightBox.remove_actor(button);
-} */
