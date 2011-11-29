@@ -1,0 +1,143 @@
+From 7425c0d44dd056e0e4970c82d8f1b37a3b717a0b Mon Sep 17 00:00:00 2001
+From: Felipe Mellado <famellad@gmail.com>
+Date: Tue, 29 Nov 2011 16:43:13 -0300
+Subject: [PATCH] Added CSS file.
+
+---
+ extension.js   |   66 +++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ metadata.json  |    2 +-
+ stylesheet.css |   40 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 106 insertions(+), 2 deletions(-)
+ create mode 100644 stylesheet.css
+
+diff --git a/extension.js b/extension.js
+index b7c1a1c..3ff04fc 100644
+--- a/extension.js
++++ b/extension.js
+@@ -241,4 +241,68 @@ function enable() {
+ 
+ function disable() {
+     Main.panel._statusArea['temperature'].actor.hide();
+-}
+\ No newline at end of file
++}
++
++/*
++const St = imports.gi.St;
++const Main = imports.ui.main;
++const Tweener = imports.ui.tweener;
++const PopupMenu = imports.ui.popupMenu;
++
++let text, button;
++
++function _hideHello() {
++    Main.uiGroup.remove_actor(text);
++    text = null;
++}
++
++function _showHello() {
++    if (!text) {
++        text = new St.Label({ style_class: 'helloworld-label', text: "sompol text" });
++        Main.uiGroup.add_actor(text);
++    }
++
++    text.opacity = 255;
++
++    let monitor = Main.layoutManager.primaryMonitor;
++
++    text.set_position(Math.floor(monitor.width / 2 - text.width / 2),
++                      Math.floor(monitor.height / 2 - text.height / 2));
++
++    Tweener.addTween(text,
++                     { time: 3 });
++
++    Tweener.addTween(text,
++                     { opacity: 0,
++                       time: 4,
++                       transition: 'easeOutQuad',
++                       onComplete: _hideHello });
++}
++
++function init() {
++    button = new St.Bin({ style_class: 'panel-button',
++                          reactive: true,
++                          can_focus: true,
++                          x_fill: true,
++                          y_fill: false,
++                          track_hover: true });
++    let icon = new St.Icon({ icon_name: 'system-run',
++                             icon_type: St.IconType.SYMBOLIC,
++                             style_class: 'system-status-icon' });
++                             
++    let labl = new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" });
++    //let labl = new St.Label({ style_class: "tempmon tempmon-warn", text: "\u26a0" });
++    //let labl = new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
++
++    button.set_child(icon);
++    button.set_child(labl);
++    button.connect('button-press-event', _showHello);
++}
++
++function enable() {
++    Main.panel._rightBox.insert_actor(button, 0);
++}
++
++function disable() {
++    Main.panel._rightBox.remove_actor(button);
++} */
+diff --git a/metadata.json b/metadata.json
+index c8dfb82..29b23b3 100644
+--- a/metadata.json
++++ b/metadata.json
+@@ -1 +1 @@
+-{"shell-version": ["3.0", "3.1.91", "3.1.92", "3.2"], "uuid": "temperature@xtranophilist", "name": "CPUTemp", "description": "Shows CPU temperature", "url": "http://motorscript.com/gnome-shell-extension-cpu-temperature/"}
++{"shell-version": ["3.2"], "uuid": "SimpleTempMon@felipe-laptop", "name": "Simple Temperature Monitor", "description": "Adds an Icon in the Notification Area that monitors temperature."}
+diff --git a/stylesheet.css b/stylesheet.css
+new file mode 100644
+index 0000000..cf3f265
+--- /dev/null
++++ b/stylesheet.css
+@@ -0,0 +1,40 @@
++.tempmon {
++    height: 14px;
++    border-radius: 9px;
++}
++
++.tempmon-crit {
++    font-size: 15px;
++    padding: 0px 0px 0px 3px;
++    width: 16px;
++    height: 18px !important;
++    
++    color: #ddd;
++    text-shadow: 1px 1px rgba(0, 0, 0, 0.6);
++    background: #dd3311;
++    border: 1px solid #ddd;
++}
++
++.tempmon-warn {
++    font-size: 14px;
++    padding: 0px 0px 4px 4px;
++    width: 15px;
++    
++    color: #ec2;
++    font-weight: bold;
++    text-shadow: 2px 1px rgba(0, 0, 0, 0.6);
++    background: rgba(255, 255, 255, 0.4);
++
++}
++
++.tempmon-norm {
++    font-size: 15px;
++    padding: 0px 0px 0px 4px;
++    width: 15px;
++    height: 18px !important;
++    
++    color: #8d6;
++    text-shdow: 1px 1px rgba(0, 0, 0, 0.7);
++    background: rgba(255, 255, 255, 0.1);
++
++}
+-- 
+1.7.7.4
+
