@@ -242,3 +242,67 @@ function enable() {
 function disable() {
     Main.panel._statusArea['temperature'].actor.hide();
 }
+
+/*
+const St = imports.gi.St;
+const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
+const PopupMenu = imports.ui.popupMenu;
+
+let text, button;
+
+function _hideHello() {
+    Main.uiGroup.remove_actor(text);
+    text = null;
+}
+
+function _showHello() {
+    if (!text) {
+        text = new St.Label({ style_class: 'helloworld-label', text: "sompol text" });
+        Main.uiGroup.add_actor(text);
+    }
+
+    text.opacity = 255;
+
+    let monitor = Main.layoutManager.primaryMonitor;
+
+    text.set_position(Math.floor(monitor.width / 2 - text.width / 2),
+                      Math.floor(monitor.height / 2 - text.height / 2));
+
+    Tweener.addTween(text,
+                     { time: 3 });
+
+    Tweener.addTween(text,
+                     { opacity: 0,
+                       time: 4,
+                       transition: 'easeOutQuad',
+                       onComplete: _hideHello });
+}
+
+function init() {
+    button = new St.Bin({ style_class: 'panel-button',
+                          reactive: true,
+                          can_focus: true,
+                          x_fill: true,
+                          y_fill: false,
+                          track_hover: true });
+    let icon = new St.Icon({ icon_name: 'system-run',
+                             icon_type: St.IconType.SYMBOLIC,
+                             style_class: 'system-status-icon' });
+                             
+    let labl = new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" });
+    //let labl = new St.Label({ style_class: "tempmon tempmon-warn", text: "\u26a0" });
+    //let labl = new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
+
+    button.set_child(icon);
+    button.set_child(labl);
+    button.connect('button-press-event', _showHello);
+}
+
+function enable() {
+    Main.panel._rightBox.insert_actor(button, 0);
+}
+
+function disable() {
+    Main.panel._rightBox.remove_actor(button);
+} */
