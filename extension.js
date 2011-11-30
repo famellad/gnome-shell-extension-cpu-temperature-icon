@@ -8,6 +8,8 @@ const Util = imports.misc.util;
 //gnome 3.0
 const Panel = imports.ui.panel;
 
+let prevT = 0;
+
 function CpuTemperature() {
     this._init.apply(this, arguments);
 }
@@ -18,14 +20,14 @@ CpuTemperature.prototype = {
     _init: function(){
         PanelMenu.SystemStatusButton.prototype._init.call(this, 'temperature');
         
-        this.statusLabel = new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" });
+        this.statusLabel = new St.Label({ style_class: "tempmon tempmon-norm", text: "-" });
         // destroy all previously created children, and add our statusLabel
         this.actor.get_children().forEach(function(c) { c.destroy() });
         this.actor.add_actor(this.statusLabel);
         
         this._update_temp();
-        //update every 15 seconds
-        GLib.timeout_add(0, 15000, Lang.bind(this, function () {
+        //update every 6 seconds
+        GLib.timeout_add(0, 3000, Lang.bind(this, function () {
             this._update_temp();
             return true;
         }));
@@ -34,7 +36,7 @@ CpuTemperature.prototype = {
     _update_temp: function() {
         let title='Error';
         let content='Click here to report!';
-        let command=["firefox", "http://github.com/xtranophilist/gnome-shell-extension-cpu-temperature/issues/"];
+        let command=["xdg-open", "https://github.com/famellad/gnome-shell-extension-cpu-temperature-icon/issues/"];
         
         let foundTemperature=false;
         let cpuTemperatureInfo = ['/sys/devices/platform/coretemp.0/temp1_input',
@@ -194,11 +196,17 @@ CpuTemperature.prototype = {
     },
 
     _getIcon: function(c) {
+        let delta = c - prevT;        
+        prevT = c;
         if (c < 60) {
             return new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" }); 
         } 
         else if (c < 75) {
-            return new St.Label({ style_class: "tempmon tempmon-warn", text: "\u279a" });
+            let ch = "\u279a"; 
+            if (delta < 0)
+                ch = "\u2798";
+
+            return new St.Label({ style_class: "tempmon tempmon-warn", text: ch });
         }
         return new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
     }
