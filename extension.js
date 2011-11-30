@@ -202,13 +202,15 @@ CpuTemperature.prototype = {
             return new St.Label({ style_class: "tempmon tempmon-norm", text: "\u2714" }); 
         } 
         else if (c < 75) {
-            let ch = "\u279a"; 
+            let ch = "="; 
             if (delta < 0)
                 ch = "\u2798";
+            else if (delta > 0)
+                ch = "\u279a";
 
             return new St.Label({ style_class: "tempmon tempmon-warn", text: ch });
         }
-        return new St.Label({ style_class: "tempmon tempmon-crit", text: "\u2622" });
+        return new St.Label({ style_class: "tempmon tempmon-crit", text: "" });
     }
 }
 

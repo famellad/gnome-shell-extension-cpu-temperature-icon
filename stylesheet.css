@@ -1,13 +1,14 @@
 .tempmon {
-    height: 14px;
+
     border-radius: 9px;
+    text-align: center;
 }
 
 .tempmon-crit {
     font-size: 15px;
-    padding: 0px 0px 0px 3px;
-    width: 16px;
-    height: 18px !important;
+    padding: 0px 0px 0px 0px;
+    width: 17px;
+    height: 16px !important;
     
     color: #ddd;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.6);
@@ -17,23 +18,26 @@
 
 .tempmon-warn {
     font-size: 14px;
-    padding: 0px 0px 4px 4px;
-    width: 15px;
+    padding: 0px 0px 4px 0px;
+    width: 17px;
+    height: 12px;
     
     color: #ec2;
     font-weight: bold;
     text-shadow: 2px 1px rgba(0, 0, 0, 0.6);
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(220, 220, 220, 0.6);
 
 }
 
 .tempmon-norm {
     font-size: 15px;
-    padding: 0px 0px 0px 4px;
-    width: 15px;
-    height: 18px !important;
+    padding: 0px 0px 0px 0px;
+    width: 17px;
+    height: 16px !important;
     
     color: #8d6;
-    text-shdow: 1px 1px rgba(0, 0, 0, 0.7);
-    background: rgba(255, 255, 255, 0.1);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.7);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(220, 220, 220, 0.3);
 }
